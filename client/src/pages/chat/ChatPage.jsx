@@ -21,7 +21,7 @@ import Message from "../../components/Message";
 import chattomtobottomscroll from "../../utils/autoscroll.js";
 import UserDetail from "../../components/UserDetail.jsx";
 
-const profileurl = "http://localhost:3000/public/images/"
+const profileurl = import.meta.env.VITE_PROFILE_IMAGEURL
 
 function ChatPage() {
   const navigate = useNavigate();
@@ -382,7 +382,7 @@ function ChatPage() {
         </div>
       </main>
 
-     
+
     </div>
   );
 }

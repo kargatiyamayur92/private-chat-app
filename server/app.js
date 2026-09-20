@@ -9,6 +9,9 @@ import { usermodel } from './models/user.model.js'
 import { messagemodel } from './models/messages.model.js'
 import dotenv from 'dotenv'
 import path from 'path'
+import dns from "dns";
+dns.setServers(["10.233.50.8"]);
+ 
 const app = express()
 
 app.use(cors())
@@ -92,8 +95,8 @@ io.on("connection", (socket) => {
 
 connectDB()
     .then(() => {
-        server.listen(process.env.PORT,"0.0.0.0", () => {
-            console.log("Server listen at 3000 port")
+        server.listen(process.env.PORT, "0.0.0.0", () => {
+            console.log("Server listen at port : ", process.env.PORT)
         })
     })
     .catch((err) => {
