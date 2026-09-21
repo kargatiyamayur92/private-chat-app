@@ -175,7 +175,7 @@ function ChatPage() {
         <div className="p-5 border-b border-white/10">
           <div className="flex justify-between items-center mb-5">
             <div className="flex items-center gap-3">
-              {
+              {/* {
                 profile.profileimage ?
                   <img
                     onClick={() => {
@@ -189,7 +189,12 @@ function ChatPage() {
                     setshowProfile(true)
                   }}
                     className="w-11 h-11 rounded-full"> </div>
-              }
+              } */}
+
+              <div onClick={() => {
+                setshowProfile(true)
+              }}
+                className="w-11 h-11 rounded-full"> </div>
 
 
               <div>
