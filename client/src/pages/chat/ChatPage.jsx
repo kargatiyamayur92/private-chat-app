@@ -176,7 +176,7 @@ function ChatPage() {
           <div className="flex justify-between items-center mb-5">
             <div className="flex items-center gap-3">
               {
-                profileurl ?
+                profile.profileimage ?
                   <img
                     onClick={() => {
                       setshowProfile(true)
