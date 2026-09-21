@@ -10,7 +10,7 @@ import {
   UserRound,
   CalendarDays,
 } from "lucide-react";
-import api from "../../api.js";
+import api from "../api.js";
 import { toast } from 'react-toastify'
 
 

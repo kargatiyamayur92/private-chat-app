@@ -3,7 +3,7 @@ import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import OTPPage from "./pages/auth/OTPPage";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
-import ChatPage from "./pages/chat/ChatPage";
+import ChatPage from "./pages/chat/ChatPage.jsx";
 
 
 

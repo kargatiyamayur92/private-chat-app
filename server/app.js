@@ -12,7 +12,13 @@ import path from 'path'
 
 const app = express()
 
-app.use(cors()) 
+app.use(cors(
+    {
+        origin: "https://private-chat-app-ruby-nu.vercel.app",
+        credentials: true,
+    }
+))
+
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -29,7 +35,8 @@ const server = http.createServer(app)
 
 const io = new Server(server, {
     cors: {
-        origin: "*"
+        origin: "https://private-chat-app-ruby-nu.vercel.app",
+        credentials: true
     }
 })
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../../api.js";
+import api from "../../api.js";
 import { toast } from "react-toastify";
 import AuthLayout from "../../components/AuthLayout";
 import Input from "../../components/Input";
@@ -9,6 +9,9 @@ import OTPLogin from "./OTPLogin";
 import { useEffect } from "react";
 
 function LoginPage() {
+
+console.log(import.meta.env.VITE_API_URL)
+
   const navigate = useNavigate();
   const [loginType, setLoginType] = useState("password");
 

@@ -13,7 +13,7 @@ import {
   Smile,
   Video,
 } from "lucide-react";
-import api from "../../../api.js";
+import api from "../../api.js";
 import { toast } from "react-toastify";
 import { socket } from "../../socket/socket";
 import UserListItem from "../../components/UserListItem";

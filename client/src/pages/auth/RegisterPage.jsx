@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../../api.js";
+import api from "../../api.js";
 import { toast } from "react-toastify";
 import AuthLayout from "../../components/AuthLayout";
 import Input from "../../components/Input";

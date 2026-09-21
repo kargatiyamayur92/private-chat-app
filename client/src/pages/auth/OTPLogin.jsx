@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Input from "../../components/Input";
 import OTPInput from "../../components/OTPInput";
-import api from "../../../api.js";
+import api from "../../api.js";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
