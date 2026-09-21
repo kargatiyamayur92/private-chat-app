@@ -10,7 +10,7 @@ import {
   UserRound,
   CalendarDays,
 } from "lucide-react";
-import axios from "axios";
+import api from "../../api.js";
 import { toast } from 'react-toastify'
 
 
@@ -77,7 +77,7 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
     let formData = new FormData()
     formData.append("image", imageFile)
 
-    let response = await axios.post(`/api/v1/updateprofile/${name}/${profile._id}`, formData)
+    let response = await api.post(`/api/v1/updateprofile/${name}/${profile._id}`, formData)
 
     //console.log(response)
     if (response.data.success) {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../../api.js";
 import { toast } from "react-toastify";
 import AuthLayout from "../../components/AuthLayout";
 import Input from "../../components/Input";
@@ -30,7 +30,7 @@ function RegisterPage() {
 
     if (!termsAccepted) return;
 
-    axios
+    api
       .post("/api/v1/register", form)
       .then((response) => {
         if (response.data.success) {

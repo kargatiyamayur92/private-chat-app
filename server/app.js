@@ -12,7 +12,7 @@ import path from 'path'
 
 const app = express()
 
-app.use(cors())
+app.use(cors()) 
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())

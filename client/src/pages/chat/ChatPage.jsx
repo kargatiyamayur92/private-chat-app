@@ -13,7 +13,7 @@ import {
   Smile,
   Video,
 } from "lucide-react";
-import axios from "axios";
+import api from "../../../api.js";
 import { toast } from "react-toastify";
 import { socket } from "../../socket/socket";
 import UserListItem from "../../components/UserListItem";
@@ -75,7 +75,7 @@ function ChatPage() {
 
     const loadChat = async () => {
       try {
-        const response = await axios.get("/api/v1/getprofile");
+        const response = await api.get("/api/v1/getprofile");
         //console.log(response)
         if (!response.data.success) {
           toast.error(response.data.msg);
@@ -88,7 +88,7 @@ function ChatPage() {
 
         socket.emit("joinRoom", currentUser._id);
 
-        const peopleResponse = await axios.get(
+        const peopleResponse = await api.get(
           `/api/v1/getallpeople/${currentUser._id}`
         );
 
@@ -130,7 +130,7 @@ function ChatPage() {
 
   const getChatMessages = async (receiverId) => {
     try {
-      const response = await axios.get(
+      const response = await api.get(
         `/api/v1/getownmessages/${profile._id}/${receiverId}`
       );
 
@@ -147,7 +147,7 @@ function ChatPage() {
 
   const handleLogout = () => {
     socket.disconnect();
-    axios.post('/api/v1/logout', { userid: profile._id })
+    api.post('/api/v1/logout', { userid: profile._id })
       .then((response) => {
         // console.log(response)
         if (response.data.success) toast.success(response.data.msg)

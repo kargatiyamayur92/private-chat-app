@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Input from "../../components/Input";
 import OTPInput from "../../components/OTPInput";
-import axios from "axios";
+import api from "../../../api.js";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,7 @@ function OTPLogin({ onBack }) {
     e.preventDefault();
     console.log("OTP Login:", { email, otp });
 
-    let response = await axios.post('/api/v1/loginOTPVerify', { email: email, otp: otp })
+    let response = await api.post('/api/v1/loginOTPVerify', { email: email, otp: otp })
 
     console.log(response)
     if (response.data.success) {
@@ -30,7 +30,7 @@ function OTPLogin({ onBack }) {
 
   async function sendotp() {
 
-    let otpsendresponse = await axios.post('/api/v1/loginOTPSEND', { email: email })
+    let otpsendresponse = await api.post('/api/v1/loginOTPSEND', { email: email })
 
     console.log(otpsendresponse)
     if (otpsendresponse.data.success) {

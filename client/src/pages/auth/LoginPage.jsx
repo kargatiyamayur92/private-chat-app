@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../../api.js";
 import { toast } from "react-toastify";
 import AuthLayout from "../../components/AuthLayout";
 import Input from "../../components/Input";
@@ -27,7 +27,7 @@ function LoginPage() {
 
     if (!loginForm.emailOrMobile || !loginForm.password) return;
 
-    axios
+    api
       .post("/api/v1/login/password", loginForm)
       .then((response) => {
         if (response.data.success) {
