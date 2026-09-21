@@ -3,10 +3,10 @@ import { messagemodel } from "../models/messages.model.js";
 
 export const getownmessages = async (req, res) => {
     try {
+        console.log("get oen messages...............")
 
-        
         let { senderid, reciverid } = req.params
-       
+
 
         let messages = await messagemodel.find({ $and: [{ $or: [{ sender: senderid }, { reciver: senderid }] }, { $or: [{ sender: reciverid }, { reciver: reciverid }] }] })
 

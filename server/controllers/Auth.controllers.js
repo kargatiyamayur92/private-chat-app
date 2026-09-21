@@ -6,6 +6,7 @@ import OTPGenerator from './OTPGenerator.js'
 
 export const register = async (req, res) => {
     try {
+        console.log("register.................")
         let { firstName, lastName, email, mobile, password, confirmPassword } = req.body
         //console.log(req.body)
 
@@ -53,6 +54,7 @@ export const register = async (req, res) => {
 
 export const loginpass = async (req, res) => {
     try {
+        console.log("login with pass .................")
         let { emailOrMobile, password } = req.body
 
         const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailOrMobile);
@@ -112,8 +114,10 @@ export const loginpass = async (req, res) => {
 
 export const logiOTPSEND = async (req, res) => {
     try {
+        console.log("login with otp.................")
+
         let { email } = req.body
-        console.log(email)
+        //console.log(email)
         let user = await usermodel.findOne({ email: email })
 
         //console.log(user)
@@ -181,6 +185,8 @@ export const logiOTPSEND = async (req, res) => {
 }
 export const loginOTPVerify = async (req, res) => {
     try {
+        console.log("login with otp verify.................")
+
         let { email, otp } = req.body
 
         let user = await usermodel.findOne({ email: email })
@@ -241,6 +247,8 @@ export const loginOTPVerify = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
+        console.log("logout.................")
+
         let { userid } = req.body
 
         let token = req.user
@@ -270,6 +278,8 @@ export const logout = async (req, res) => {
 
 export const getprofile = async (req, res) => {
     try {
+        console.log("getprofile .................")
+
         let token = req.user
 
 
@@ -304,29 +314,36 @@ export const getprofile = async (req, res) => {
 
 
 export const getallpeople = async (req, res) => {
-    let { id } = await req.params
+    try {
+        console.log("getprofile...............")
 
-    let users = await usermodel.find({ _id: { $ne: id } })
+        let { id } = await req.params
 
-    //console.log(users)
+        let users = await usermodel.find({ _id: { $ne: id } })
 
-    if (users) {
-        res.json(
-            {
-                success: true,
-                msg: "User fetched",
-                users
-            }
-        )
+        //console.log(users)
+
+        if (users) {
+            res.json(
+                {
+                    success: true,
+                    msg: "User fetched",
+                    users
+                }
+            )
+        }
+        else {
+            res.json(
+                {
+                    success: true,
+                    msg: "User fetched error"
+                }
+            )
+        }
+    } catch (error) {
+        console.log(error)
     }
-    else {
-        res.json(
-            {
-                success: true,
-                msg: "User fetched error"
-            }
-        )
-    }
+
 
 
 }
