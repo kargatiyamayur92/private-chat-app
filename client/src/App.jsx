@@ -4,6 +4,7 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import OTPPage from "./pages/auth/OTPPage";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 import ChatPage from "./pages/chat/ChatPage.jsx";
+import Home from "./pages/Home.jsx";
 
 
 
@@ -12,7 +13,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/chat" replace />} />
+        <Route path="/" element={<Home/>} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/otp" element={<OTPPage />} />
