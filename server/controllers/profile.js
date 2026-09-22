@@ -3,48 +3,62 @@ import fs from 'fs'
 
 
 export const profileupdate = async (req, res) => {
-    //console.log(req.file)
-    let { filename } = await req.file
-    let { name, id } = await req.params
-    //console.log(req.params)
-    let user = await usermodel.findOne({ _id: id })
-    // console.log(user)
-    if (!user) {
-        return res.json(
-            {
+    try {
+        const { name, id } = req.params;
+
+        const user = await usermodel.findOne({ _id: id });
+
+        if (!user) {
+            return res.json({
                 success: false,
-                msg: "USer does not exist"
+                msg: "User does not exist"
+            });
+        }
+
+        // Save old image before replacing it
+        const oldProfileImage = user.profileimage;
+
+        // New uploaded image
+        const newProfileImage = req.file?.filename;
+
+        if (!newProfileImage) {
+            return res.json({
+                success: false,
+                msg: "Profile image is required"
+            });
+        }
+
+        // Update user
+        user.profileimage = newProfileImage;
+        user.lastName = name;
+        user.firstName = "";
+
+        await user.save();
+
+        // Delete old image
+        if (oldProfileImage) {
+            const oldImagePath = `public/images/${oldProfileImage}`;
+
+            if (fs.existsSync(oldImagePath)) {
+                fs.unlink(oldImagePath, (err) => {
+                    if (err) {
+                        console.error("Old profile image delete error:", err);
+                    }
+                });
             }
-        )
-    }
-
-    user.profileimage = filename
-    user.lastName = name
-    user.firstName = ""
-    user.save()
-
-
-    if (filename) {
-        if (fs.existsSync(`public/images/${user.profileimage}`)) {
-            fs.unlink(`public/images/${user.profileimage}`, (err) => {
-                if (err) {
-                    return res.json(
-                        {
-                            success: false,
-                            msg: "profile image delete error"
-                        }
-                    )
-                }
-            })
         }
-    }
 
-
-    return res.json(
-        {
+        return res.json({
             success: true,
-            msg: "User profile successfuly updated"
-        }
-    )
+            msg: "User profile successfully updated"
+        });
 
-}
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            success: false,
+            msg: "Profile update failed"
+        });
+    }
+};
