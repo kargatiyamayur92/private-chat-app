@@ -180,7 +180,7 @@ function ChatPage() {
               <div onClick={() => {
                 setshowProfile(true)
               }}
-                className="w-11 h-11 rounded-full bg-green-500">{profile.lastName.chatAt(0)} </div>
+                className="w-11 h-11 rounded-full bg-green-500">{profile.lastName.charAt(0)} </div>
 
 
               <div onClick={() => {
