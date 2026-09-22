@@ -298,7 +298,7 @@ function ChatPage() {
 
             <div className="relative">
               {
-                selectedUser ? profile?.firstName ? (
+                selectedUser ? selectedUser?.firstName ? (
                   <div
                     onClick={() => setshowProfile(true)}
                     className="
@@ -309,7 +309,7 @@ function ChatPage() {
       cursor-pointer
     "
                   >
-                    {profile.firstName.charAt(0).toUpperCase()}
+                    {selectedUser.firstName.charAt(0).toUpperCase()}
                   </div>
                 ) : (
                   <div
@@ -322,7 +322,7 @@ function ChatPage() {
       cursor-pointer
     "
                   >
-                    {profile?.lastName?.charAt(0).toUpperCase() || "U"}
+                    {selectedUser?.lastName?.charAt(0).toUpperCase() || "U"}
                   </div>
                 )
               :
