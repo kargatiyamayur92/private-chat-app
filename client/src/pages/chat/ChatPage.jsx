@@ -298,25 +298,37 @@ function ChatPage() {
 
             <div className="relative">
               {
-                selectedUser ? selectedUser.profileimage ?
-                  <div className="w-11 h-11 rounded-full bg-pink-400 flex items-center justify-center">
-                    <img src={`${profileurl}/${selectedUser.profileimage}`} alt="" className="h-full w-full rounded-full" />
+                selectedUser ? profile?.firstName ? (
+                  <div
+                    onClick={() => setshowProfile(true)}
+                    className="
+      w-11 h-11
+      rounded-full
+      bg-green-500
+      flex items-center justify-center
+      cursor-pointer
+    "
+                  >
+                    {profile.firstName.charAt(0).toUpperCase()}
                   </div>
-
-                  :
-
-                  <div className="w-11 h-11 rounded-full bg-pink-400 flex items-center justify-center">
-                    {selectedUser?.firstName?.charAt(0) || (
-                      <MessageCircle size={18} />
-                    )}
+                ) : (
+                  <div
+                    onClick={() => setshowProfile(true)}
+                    className="
+      w-11 h-11
+      rounded-full
+      bg-pink-500
+      flex items-center justify-center
+      cursor-pointer
+    "
+                  >
+                    {profile?.lastName?.charAt(0).toUpperCase() || "U"}
                   </div>
-                  :
-                  <div className="w-11 h-11 rounded-full bg-pink-400 flex items-center justify-center">
-                    {selectedUser?.firstName?.charAt(0) || (
-                      <MessageCircle size={18} />
-                    )}
-                  </div>
+                )
+              :
+              null
               }
+              
 
 
               {selectedUser?.online && (
