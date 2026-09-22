@@ -176,21 +176,33 @@ function ChatPage() {
           <div className="flex justify-between items-center mb-5">
             <div className="flex items-center gap-3">
 
-              {
-                profile.firstName ?
-                  <div onClick={() => {
-                    setshowProfile(true)
-                  }}
-                    className="w-11 h-11 rounded-full bg-green-500 flex iteam-center justify-content">{profile.firstName.charAt(0)} </div>
-
-                  :
-                  <div onClick={() => {
-                    setshowProfile(true)
-                  }}
-                    className="w-11 h-11 rounded-full bg-green-500 flex iteam-center justify-content">{profile.lastName.charAt(0)} </div>
-
-
-              }
+              {profile?.firstName ? (
+                <div
+                  onClick={() => setshowProfile(true)}
+                  className="
+      w-11 h-11
+      rounded-full
+      bg-green-500
+      flex items-center justify-center
+      cursor-pointer
+    "
+                >
+                  {profile.firstName.charAt(0).toUpperCase()}
+                </div>
+              ) : (
+                <div
+                  onClick={() => setshowProfile(true)}
+                  className="
+      w-11 h-11
+      rounded-full
+      bg-pink-500
+      flex items-center justify-center
+      cursor-pointer
+    "
+                >
+                  {profile?.lastName?.charAt(0).toUpperCase() || "U"}
+                </div>
+              )}
 
 
               <div>
