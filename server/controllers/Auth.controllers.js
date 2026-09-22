@@ -75,8 +75,8 @@ export const loginpass = async (req, res) => {
         }
 
         bcrypt.compare(password, user.password, (err, response) => {
-            
-            if (response) { 
+
+            if (response) {
 
                 let token = jwt.sign(
                     {
@@ -86,7 +86,14 @@ export const loginpass = async (req, res) => {
                     process.env.SECRATE
                 )
 
-                if (token) res.cookie('token', token)
+                if (token) {
+                    res.cookie("token", token, {
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: "none",
+                        maxAge: 7 * 24 * 60 * 60 * 1000
+                    });
+                }
 
                 res.json(
                     {
@@ -214,7 +221,12 @@ export const loginOTPVerify = async (req, res) => {
                 )
 
                 if (token) {
-                    res.cookie('token', token)
+                    res.cookie("token", token, {
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: "none",
+                        maxAge: 7 * 24 * 60 * 60 * 1000
+                    });
 
                     res.json(
                         {
