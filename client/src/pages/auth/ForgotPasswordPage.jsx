@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AuthLayout from "../../components/AuthLayout";
 import Input from "../../components/Input";
 import PrimaryButton from "../../components/PrimaryButton";
+import HomeBottomNav from "../../components/home/HomeBottomNav";
 
 function ForgotPasswordPage() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ function ForgotPasswordPage() {
       title="Forgot password?"
       subtitle="Enter your email and we'll send you an OTP"
     >
+      <HomeBottomNav/>
       <form onSubmit={handleSubmit}>
         <Input
           label="Email"

@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import AuthLayout from "../../components/AuthLayout";
 import Input from "../../components/Input";
 import PrimaryButton from "../../components/PrimaryButton";
+import HomeBottomNav from "../../components/home/HomeBottomNav.jsx";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ function RegisterPage() {
       title="Create your account"
       subtitle="Join and start chatting with your friends"
     >
+      <HomeBottomNav/>
       <form onSubmit={handleRegister}>
         <div className="grid grid-cols-2 gap-3">
           <Input

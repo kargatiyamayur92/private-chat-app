@@ -7,6 +7,7 @@ import Input from "../../components/Input";
 import PrimaryButton from "../../components/PrimaryButton";
 import OTPLogin from "./OTPLogin";
 import { useEffect } from "react";
+import HomeBottomNav from "../../components/home/HomeBottomNav.jsx";
 
 function LoginPage() {
 
@@ -48,6 +49,7 @@ console.log(import.meta.env.VITE_API_URL)
       title="Welcome back"
       subtitle="Login to continue your conversations"
     >
+      <HomeBottomNav/>
       {loginType === "password" ? (
         <form onSubmit={handleLogin}>
           <Input

@@ -4,6 +4,7 @@ import OTPInput from "../../components/OTPInput";
 import api from "../../api.js";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import HomeBottomNav from "../../components/home/HomeBottomNav.jsx";
 
 function OTPLogin({ onBack }) {
   const [email, setEmail] = useState("");
@@ -46,6 +47,7 @@ function OTPLogin({ onBack }) {
 
   return (
     <form onSubmit={handleSubmit}>
+      <HomeBottomNav/>
       <Input
         label="Email"
         name="email"

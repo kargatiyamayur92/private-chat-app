@@ -4,6 +4,7 @@ import { Lock } from "lucide-react";
 import AuthLayout from "../../components/AuthLayout";
 import OTPInput from "../../components/OTPInput";
 import PrimaryButton from "../../components/PrimaryButton";
+import HomeBottomNav from "../../components/home/HomeBottomNav";
 
 function OTPPage() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function OTPPage() {
       title="Verify your email"
       subtitle="Enter the 6-digit code sent to your email"
     >
+      <HomeBottomNav/>
       <form onSubmit={handleVerify}>
         <div className="flex justify-center mb-7">
           <div className="w-16 h-16 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">

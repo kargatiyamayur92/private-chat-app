@@ -19,6 +19,11 @@ const HomeBottomNav = () => {
             name: "Login",
             icon: "↗",
             path: "/login"
+        },
+        {
+            name: "Register",
+            icon: "↗",
+            path: "/register"
         }
     ];
 
