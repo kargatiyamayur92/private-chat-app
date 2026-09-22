@@ -261,8 +261,6 @@ export const logout = async (req, res) => {
     try {
         console.log("logout.................")
 
-        let { userid } = req.body
-
         let token = req.user
 
         if (!token) {
@@ -274,7 +272,12 @@ export const logout = async (req, res) => {
             )
         }
 
-        res.cookie('token', '')
+        res.cookie("token", '', {
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
 
         res.json(
             {

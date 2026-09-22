@@ -147,7 +147,7 @@ function ChatPage() {
 
   const handleLogout = () => {
     socket.disconnect();
-    api.post('/api/v1/logout', { userid: profile._id })
+    api.post('/api/v1/logout')
       .then((response) => {
         // console.log(response)
         if (response.data.success) toast.success(response.data.msg)
