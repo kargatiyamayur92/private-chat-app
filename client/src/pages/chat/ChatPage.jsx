@@ -177,17 +177,17 @@ function ChatPage() {
             <div className="flex items-center gap-3">
 
               {
-                profile.lastName ?
+                profile.firstName ?
                   <div onClick={() => {
                     setshowProfile(true)
                   }}
-                    className="w-11 h-11 rounded-full bg-green-500">{profile.lastName.charAt(0)} </div>
+                    className="w-11 h-11 rounded-full bg-green-500 flex iteam-center justify-content">{profile.firstName.charAt(0)} </div>
 
                   :
                   <div onClick={() => {
                     setshowProfile(true)
                   }}
-                    className="w-11 h-11 rounded-full bg-green-500">unknown </div>
+                    className="w-11 h-11 rounded-full bg-green-500 flex iteam-center justify-content">{profile.lastName.charAt(0)} </div>
 
 
               }
