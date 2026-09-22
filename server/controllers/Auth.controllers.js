@@ -75,8 +75,8 @@ export const loginpass = async (req, res) => {
         }
 
         bcrypt.compare(password, user.password, (err, response) => {
-
-            if (response) {
+            
+            if (response) { 
 
                 let token = jwt.sign(
                     {
