@@ -6,18 +6,11 @@ function UserListItem({ user, active, onClick, profileurl }) {
         }`}
     >
       <div className="relative flex-shrink-0">
-        {
-          user.profileimage ?
-            <div className="w-12 h-12 rounded-full bg-red-400 flex items-center justify-center text-4xl font-bold">
-              <img src={`${profileurl}/${user.profileimage}`} alt={`${user.lastName}`} className="h-full w-full rounded-full" />
-            </div>
 
+        <div className="w-12 h-12 rounded-full bg-red-400 flex items-center justify-center text-4xl font-bold">
+          {user.lastName?.charAt(0)}
+        </div>
 
-            :
-            <div className="w-12 h-12 rounded-full bg-red-400 flex items-center justify-center text-4xl font-bold">
-              {user.firstName?.charAt(0)}
-            </div>
-        }
 
 
         {user.online && (

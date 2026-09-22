@@ -175,21 +175,13 @@ function ChatPage() {
         <div className="p-5 border-b border-white/10">
           <div className="flex justify-between items-center mb-5">
             <div className="flex items-center gap-3">
-              {
-                profile.profileimage ?
-                  <img
-                    onClick={() => {
-                      setshowProfile(true)
-                    }}
-                    src={`${profileurl}/${profile.profileimage}`}
-                    className="w-11 h-11 rounded-full"
-                  />
-                  :
-                  <div onClick={() => {
-                    setshowProfile(true)
-                  }}
-                    className="w-11 h-11 rounded-full"> </div>
-              }
+
+
+              <div onClick={() => {
+                setshowProfile(true)
+              }}
+                className="w-11 h-11 rounded-full bg-green-500">{profile.lastName.chatAt(0)} </div>
+
 
               <div onClick={() => {
                 setshowProfile(true)

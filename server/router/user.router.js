@@ -18,7 +18,7 @@ router.post('/logout', isloggdin, logout)
 router.get('/getprofile', isloggdin, getprofile)
 router.get('/getallpeople/:id', isloggdin, getallpeople)
 router.get('/getownmessages/:senderid/:reciverid', getownmessages)
-router.post('/updateprofile/:name/:id',upload.single('image'),profileupdate)
+router.post('/updateprofile/:name/:id',isloggdin,profileupdate)
 
 
 export default router

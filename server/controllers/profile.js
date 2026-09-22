@@ -1,66 +1,40 @@
 import { usermodel } from "../models/user.model.js"
-import fs from 'fs'
-
 
 export const profileupdate = async (req, res) => {
     try {
-        return res.json(
-            {
-                success:false,
-                msg:"This router currently unaviliable"
-            }
-        )
-        // const { name, id } = req.params;
+        const { name, id } = req.params;
 
-        // const user = await usermodel.findOne({ _id: id });
+        // Check name
+        if (!name || !name.trim()) {
+            return res.json({
+                success: false,
+                msg: "Name is required"
+            });
+        }
 
-        // if (!user) {
-        //     return res.json({
-        //         success: false,
-        //         msg: "User does not exist"
-        //     });
-        // }
+        // Find user by ID
+        const user = await usermodel.findById(id);
 
-        // // Save old image before replacing it
-        // const oldProfileImage = user.profileimage;
+        if (!user) {
+            return res.json({
+                success: false,
+                msg: "User does not exist"
+            });
+        }
 
-        // // New uploaded image
-        // const newProfileImage = req.file?.filename;
+        // Update name
+        user.lastName = name.trim();
+        user.firstName = "";
 
-        // if (!newProfileImage) {
-        //     return res.json({
-        //         success: false,
-        //         msg: "Profile image is required"
-        //     });
-        // }
+        await user.save();
 
-        // // Update user
-        // user.profileimage = newProfileImage;
-        // user.lastName = name;
-        // user.firstName = "";
-
-        // await user.save();
-
-        // // Delete old image
-        // if (oldProfileImage) {
-        //     const oldImagePath = `public/images/${oldProfileImage}`;
-
-        //     if (fs.existsSync(oldImagePath)) {
-        //         fs.unlink(oldImagePath, (err) => {
-        //             if (err) {
-        //                 console.error("Old profile image delete error:", err);
-        //             }
-        //         });
-        //     }
-        // }
-
-        // return res.json({
-        //     success: true,
-        //     msg: "User profile successfully updated"
-        // });
+        return res.json({
+            success: true,
+            msg: "Profile name updated successfully"
+        });
 
     } catch (error) {
-        console.error(error);
+        console.error("Profile update error:", error);
 
         return res.status(500).json({
             success: false,
@@ -68,3 +42,4 @@ export const profileupdate = async (req, res) => {
         });
     }
 };
+

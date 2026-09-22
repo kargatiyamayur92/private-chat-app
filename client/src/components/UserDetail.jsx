@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Camera,
   Pencil,
   Check,
   X,
@@ -10,96 +9,64 @@ import {
   UserRound,
   CalendarDays,
 } from "lucide-react";
-import api from "../api.js";
-import { toast } from 'react-toastify'
+import api from "../api";
+import { toast } from "react-toastify";
 
-
-function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
-  const fileInputRef = useRef(null);
-
+function UserDetail({
+  profile,
+  onClose,
+  onSave,
+  setshowProfile,
+}) {
   const [editingName, setEditingName] = useState(false);
 
   const [name, setName] = useState(
     `${profile?.firstName || ""} ${profile?.lastName || ""}`.trim()
   );
 
-  const [imagePreview, setImagePreview] = useState(
-    profile?.profileImage || profile?.avatar || ""
-  );
-
-  const [imageFile, setImageFile] = useState(null);
-
   useEffect(() => {
     setName(
       `${profile?.firstName || ""} ${profile?.lastName || ""}`.trim()
     );
-
-    setImagePreview(
-      profile?.profileImage || profile?.avatar || ""
-    );
   }, [profile]);
 
   // ===============================
-  // CHANGE DP
+  // SAVE NAME
   // ===============================
 
-  const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-      alert("Please select an image.");
-      return;
-    }
-
-    setImageFile(file);
-
-    const preview = URL.createObjectURL(file);
-    setImagePreview(preview);
-  };
-
-  // ===============================
-  // SAVE
-  // ===============================
-
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!name.trim()) {
       alert("Name cannot be empty.");
       return;
     }
 
+    // Send only name to parent
     onSave?.({
       name: name.trim(),
-      imageFile,
     });
 
-    let formData = new FormData()
-    formData.append("image", imageFile)
-
-    let response = await api.post(`/api/v1/updateprofile/${name}/${profile._id}`, formData)
-
-    //console.log(response)
-    if (response.data.success) {
-      toast.success(response.data.msg)
-    }
-    else {
-      toast.error(response.data.msg)
-    }
+    api.post(`/api/v1/updateprofile/${name}/${profile._id}`)
+      .then((response) => {
+        if (response.data.success) toast.success(response.data.msg)
+        else toast.error(response.data.msg)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
 
     setEditingName(false);
   };
 
   const hasChanges =
-    editingName || imageFile !== null;
+    name.trim() !==
+    `${profile?.firstName || ""} ${profile?.lastName || ""}`.trim();
 
   return (
     <div className="fixed inset-0 z-[100]">
 
       {/* BACKDROP */}
-
       <div
-
+        onClick={() => setshowProfile(false)}
         className="
           absolute inset-0
           bg-black/45
@@ -107,21 +74,16 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
         "
       />
 
-
       {/* PROFILE PANEL */}
-
       <div
         className="
           absolute
 
-          /* Desktop */
           right-4 top-4 bottom-4
           w-[420px]
 
-          /* Tablet */
           md:max-w-[420px]
 
-          /* Mobile */
           max-md:left-0
           max-md:right-0
           max-md:top-auto
@@ -146,7 +108,7 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
         "
       >
 
-        {/* LIQUID LIGHT EFFECTS */}
+        {/* LIQUID LIGHT EFFECT */}
         <div
           className="
             pointer-events-none
@@ -175,13 +137,10 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
           "
         />
 
-
         {/* CONTENT */}
-
         <div className="relative h-full overflow-y-auto">
 
           {/* HEADER */}
-
           <div
             className="
               sticky
@@ -203,9 +162,7 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
               border-white/10
             "
           >
-
             <div>
-
               <h2 className="text-lg sm:text-xl font-semibold tracking-tight">
                 Profile
               </h2>
@@ -213,14 +170,13 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
               <p className="text-xs text-white/40 mt-1">
                 Manage your personal information
               </p>
-
             </div>
 
-
             <button
-              onClick={() => { setshowProfile(false) }}
+              onClick={() => setshowProfile(false)}
               className="
-                w-9 h-9
+                w-9
+                h-9
                 rounded-full
 
                 flex
@@ -240,20 +196,15 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
             >
               <X size={18} />
             </button>
-
           </div>
 
-
           {/* PROFILE HERO */}
-
           <div className="px-6 sm:px-8 pt-8 pb-7">
 
             <div
               className="
                 relative
-
                 rounded-[28px]
-
                 p-6
                 sm:p-7
 
@@ -265,12 +216,12 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
               "
             >
 
-              {/* DP */}
-
+              {/* PROFILE ICON */}
               <div className="flex flex-col items-center">
 
                 <div className="relative">
 
+                  {/* Glow */}
                   <div
                     className="
                       absolute
@@ -287,69 +238,16 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
                     "
                   />
 
-                  {imagePreview ? (
-
-                    <img
-                      src={imagePreview}
-                      alt="Profile"
-                      className="
-                        relative
-
-                        w-28
-                        h-28
-
-                        sm:w-32
-                        sm:h-32
-
-                        rounded-full
-
-                        object-cover
-
-                        border
-                        border-white/20
-
-                        shadow-[0_10px_40px_rgba(0,0,0,0.35)]
-                      "
-                    />
-                  ) : (
-
-                    <img
-                      src={`${profileurl}/${profile.profileimage}`}
-                      alt="Profile"
-                      className="
-                        relative
-
-                        w-28
-                        h-28
-
-                        sm:w-32
-                        sm:h-32
-
-                        rounded-full
-
-                        object-cover
-
-                        border
-                        border-white/20
-
-                        shadow-[0_10px_40px_rgba(0,0,0,0.35)]
-                      "
-                    />
-
-                  )}
-
-
-                  {/* CAMERA */}
-
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
+                  {/* Initial Avatar */}
+                  <div
                     className="
-                      absolute
-                      right-1
-                      bottom-1
+                      relative
 
-                      w-10
-                      h-10
+                      w-28
+                      h-28
+
+                      sm:w-32
+                      sm:h-32
 
                       rounded-full
 
@@ -357,43 +255,37 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
                       items-center
                       justify-center
 
-                      bg-black/60
-                      backdrop-blur-xl
+                      bg-gradient-to-br
+                      from-red-500
+                      via-orange-500
+                      to-yellow-400
 
                       border
                       border-white/20
 
-                      hover:bg-black/75
-                      hover:scale-105
+                      shadow-[0_10px_40px_rgba(0,0,0,0.35)]
 
-                      transition
+                      text-white
+                      text-4xl
+                      font-semibold
                     "
                   >
-                    <Camera size={17} />
-                  </button>
+                    {(name?.charAt(0) || "U").toUpperCase()}
+                  </div>
 
                 </div>
 
-
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="hidden"
-                />
-
-
+                {/* NAME */}
                 <h1 className="mt-5 text-xl sm:text-2xl font-semibold">
                   {name || "Your Name"}
                 </h1>
 
-
+                {/* EMAIL */}
                 <p className="mt-1 text-sm text-white/40">
                   {profile?.email || "No email"}
                 </p>
 
-
+                {/* EDIT NAME */}
                 <button
                   onClick={() => setEditingName(true)}
                   className="
@@ -430,9 +322,7 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
 
           </div>
 
-
           {/* DETAILS */}
-
           <div className="px-6 sm:px-8 pb-8">
 
             <p
@@ -447,11 +337,9 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
               Personal information
             </p>
 
-
             <div
               className="
                 rounded-[24px]
-
                 overflow-hidden
 
                 bg-white/[0.045]
@@ -495,9 +383,7 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
 
           </div>
 
-
           {/* NAME EDIT MODAL */}
-
           {editingName && (
 
             <div
@@ -538,7 +424,6 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
                 <div className="flex items-center justify-between">
 
                   <div>
-
                     <h3 className="font-semibold">
                       Change name
                     </h3>
@@ -546,18 +431,19 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
                     <p className="text-xs text-white/40 mt-1">
                       Enter your display name
                     </p>
-
                   </div>
 
                   <button
                     onClick={() => setEditingName(false)}
-                    className="text-white/40 hover:text-white"
+                    className="
+                      text-white/40
+                      hover:text-white
+                    "
                   >
                     <X size={18} />
                   </button>
 
                 </div>
-
 
                 <input
                   autoFocus
@@ -590,7 +476,6 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
                   placeholder="Your name"
                 />
 
-
                 <div className="flex gap-3 mt-5">
 
                   <button
@@ -598,6 +483,7 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
                     className="
                       flex-1
                       py-3
+
                       rounded-xl
 
                       bg-white/[0.06]
@@ -612,12 +498,12 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
                     Cancel
                   </button>
 
-
                   <button
-                    onClick={() => setEditingName(false)}
+                    onClick={handleSave}
                     className="
                       flex-1
                       py-3
+
                       rounded-xl
 
                       bg-gradient-to-r
@@ -646,9 +532,7 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
 
           )}
 
-
           {/* SAVE */}
-
           {hasChanges && !editingName && (
 
             <div
@@ -663,7 +547,8 @@ function UserDetail({ profile, onClose, onSave, setshowProfile, profileurl }) {
                 bg-black/20
                 backdrop-blur-2xl
 
-                border-t border-white/10
+                border-t
+                border-white/10
               "
             >
 
@@ -741,14 +626,14 @@ function DetailRow({ icon, label, value, last }) {
 
           bg-white/[0.06]
 
-          border border-white/10
+          border
+          border-white/10
 
           text-white/45
         "
       >
         {icon}
       </div>
-
 
       <div className="min-w-0 flex-1">
 
