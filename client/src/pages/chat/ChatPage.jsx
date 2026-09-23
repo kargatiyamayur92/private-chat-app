@@ -22,7 +22,7 @@ import chattomtobottomscroll from "../../utils/autoscroll.js";
 import UserDetail from "../../components/UserDetail.jsx";
 import ChatMenu from "../../components/ChatMenu.jsx";
 
-const msgsound = new Audio('/sound/msg-sound.mp3')
+import msgsound from '../../assets/msg-sound.wav'
 const profileurl = import.meta.env.VITE_PROFILE_IMAGEURL
 
 function ChatPage() {
@@ -130,13 +130,9 @@ function ChatPage() {
       const { message, senderuserid } = data;
       const now = new Date();
 
-      msgsound.current.currentTime = 0;
-
-      msgsound.current
-        .play()
-        .catch((error) => {
-          console.log("Notification sound blocked:", error);
-        });
+      new Audio(msgsound).play().catch((error) => {
+        console.log("Sound playback failed:", error);
+      });
 
       setMessages((prev) => [
         ...prev,
