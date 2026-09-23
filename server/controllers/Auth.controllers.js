@@ -307,6 +307,12 @@ export const getprofile = async (req, res) => {
 
         let user = await usermodel.findOne({ _id: token.id })
 
+        if (!user.online) {
+            user.online = true
+            await user.save()
+        }
+
+
         //console.log(user)
 
         if (user) {
