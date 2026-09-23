@@ -104,7 +104,7 @@ io.on("connection", (socket) => {
 
         io.emit("userOnline", {
             userId: socket.userID,
-            online: true
+            online: false
         });
 
         let user = await usermodel.findOne({ _id: socket.userID })
