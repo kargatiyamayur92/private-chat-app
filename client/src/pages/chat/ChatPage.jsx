@@ -38,15 +38,17 @@ function ChatPage() {
 
 
   useEffect(() => {
+    if (profile && selectedUser) {
+      socket.emit("typing", { senderid: profile._id, reciverid: selectedUser._id, istype: true })
 
-    socket.emit("typing", { senderid: profile._id, reciverid: selectedUser._id, istype: true })
+      let timer = setTimeout(() => {
+        socket.emit("typing", { senderid: profile._id, reciverid: selectedUser._id, istype: false })
+      }, 200);
 
-    let timer = setTimeout(() => {
-      socket.emit("typing", { senderid: profile._id, reciverid: selectedUser._id, istype: false })
-    }, 200);
+      return () => {
+        clearTimeout(timer)
+      }
 
-    return () => {
-      clearTimeout(timer)
     }
 
   }, [message])
