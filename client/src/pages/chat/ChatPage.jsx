@@ -147,6 +147,16 @@ function ChatPage() {
       }
     })
 
+    socket.on("userOnline", ({ userId, online }) => {
+      setUsers((prev) =>
+        prev.map((user) =>
+          user._id === userId
+            ? { ...user, online }
+            : user
+        )
+      );
+    });
+
     socket.on("receiveMessage", handleReceiveMessage);
 
     return () => {

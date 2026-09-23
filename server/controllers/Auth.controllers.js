@@ -74,7 +74,7 @@ export const loginpass = async (req, res) => {
             )
         }
 
-        bcrypt.compare(password, user.password, (err, response) => {
+        bcrypt.compare(password, user.password, async (err, response) => {
 
             if (response) {
 
@@ -94,6 +94,9 @@ export const loginpass = async (req, res) => {
                         maxAge: 7 * 24 * 60 * 60 * 1000
                     });
                 }
+
+                user.online = true
+                await user.save()
 
                 res.json(
                     {

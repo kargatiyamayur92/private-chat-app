@@ -59,6 +59,11 @@ io.on("connection", (socket) => {
 
         io.to(userID).emit('USer joined')
 
+        io.emit("userOnline", {
+            userId: userID,
+            online: true
+        });
+
     })
 
 
@@ -88,7 +93,7 @@ io.on("connection", (socket) => {
     socket.on("typing", (data) => {
         let { senderid, reciverid, istype } = data
 
-        io.to(reciverid).emit("type",{ senderid: senderid, reciverid: reciverid, istype: istype })
+        io.to(reciverid).emit("type", { senderid: senderid, reciverid: reciverid, istype: istype })
     })
 
     socket.on("disconnect", async () => {
