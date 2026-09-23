@@ -84,6 +84,12 @@ io.on("connection", (socket) => {
 
     })
 
+    //typing
+    socket.on("typing", (data) => {
+        let { senderid, reciverid, istype } = data
+
+        io.to(reciverid).emit("type",{ senderid: senderid, reciverid: reciverid, istype: istype })
+    })
 
     socket.on("disconnect", async () => {
         console.log("Disconnect : ", socket.userID)

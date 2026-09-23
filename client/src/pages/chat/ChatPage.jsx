@@ -34,6 +34,22 @@ function ChatPage() {
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");
   const [showprofile, setshowProfile] = useState(false)
+  const [isTyping, setistyping] = useState(false)
+
+
+  useEffect(() => {
+
+    socket.emit("typing", { senderid: profile._id, reciverid: selectedUser._id, istype: true })
+
+    let timer = setTimeout(() => {
+      socket.emit("typing", { senderid: profile._id, reciverid: selectedUser._id, istype: false })
+    }, 200);
+
+    return () => {
+      clearTimeout(timer)
+    }
+
+  }, [message])
 
   useEffect(() => {
     chattomtobottomscroll()
@@ -120,6 +136,14 @@ function ChatPage() {
       ]);
 
     };
+
+    socket.on("type", (data) => {
+      let { senderid, reciverid, istype } = data
+
+      if (profile._id != reciverid) {
+        setistyping(istype)
+      }
+    })
 
     socket.on("receiveMessage", handleReceiveMessage);
 
@@ -325,10 +349,10 @@ function ChatPage() {
                     {selectedUser?.lastName?.charAt(0).toUpperCase() || "U"}
                   </div>
                 )
-              :
-              null
+                  :
+                  null
               }
-              
+
 
 
               {selectedUser?.online && (
@@ -380,6 +404,11 @@ function ChatPage() {
             />
           ))}
         </div>
+        {isTyping && (
+          <p className="text-sm text-zinc-400">
+            Typing...
+          </p>
+        )}
 
         <div className="p-3 md:p-5 border-t border-white/10 bg-[#0d0d0f]">
           <div className="flex items-center gap-2 max-w-5xl mx-auto">
