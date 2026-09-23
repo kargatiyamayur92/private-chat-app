@@ -24,7 +24,7 @@ const messagesSchema = mongoose.Schema(
         deletedFor: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "user"
+                ref: "users"
             }
         ]
     },
