@@ -20,6 +20,7 @@ import UserListItem from "../../components/UserListItem";
 import Message from "../../components/Message";
 import chattomtobottomscroll from "../../utils/autoscroll.js";
 import UserDetail from "../../components/UserDetail.jsx";
+import ChatMenu from "../../components/ChatMenu.jsx";
 
 const profileurl = import.meta.env.VITE_PROFILE_IMAGEURL
 
@@ -195,6 +196,25 @@ function ChatPage() {
       })
 
   };
+
+  const deleteALlmessages = async () => {
+    try {
+
+      setMessages([])
+
+      api.post(`/api/v1/deleteallmessages/${profile._id}/${selectedUser._id}`)
+        .then((response) => {
+          if (response.data.success) toast.success(response.data.msg)
+          else toast.error(response.data.msg)
+        })
+        .catch((Err) => {
+          console.log(Err)
+        })
+        
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="h-screen bg-[#09090b] text-white flex overflow-hidden">
@@ -395,7 +415,11 @@ function ChatPage() {
               <Video size={19} />
             </button>
             <button className="p-2.5 rounded-xl hover:bg-white/10">
-              <MoreVertical size={19} />
+              <ChatMenu
+                onDeleteAll={() => {
+                  deleteALlmessages()
+                }}
+              />
             </button>
           </div>
         </header>

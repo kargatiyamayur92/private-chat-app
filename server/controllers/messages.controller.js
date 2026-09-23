@@ -35,3 +35,40 @@ export const getownmessages = async (req, res) => {
         console.log(error)
     }
 }
+
+export const deleteallmessages = async (req, res) => {
+    try {
+        const { userid, selecteduserid } = req.params;
+
+        const result = await messagemodel.deleteMany({
+            $and: [
+                {
+                    $or: [
+                        { sender: userid },
+                        { reciver: userid }
+                    ]
+                },
+                {
+                    $or: [
+                        { sender: selecteduserid },
+                        { reciver: selecteduserid }
+                    ]
+                }
+            ]
+        });
+
+        res.json({
+            success: true,
+            msg: "All messages deleted",
+            deletedCount: result.deletedCount
+        });
+
+    } catch (error) {
+        console.log("Delete messages error:", error);
+
+        res.status(500).json({
+            success: false,
+            msg: "Failed to delete messages"
+        });
+    }
+};

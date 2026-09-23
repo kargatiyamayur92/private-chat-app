@@ -378,3 +378,4 @@ export const getallpeople = async (req, res) => {
 
 
 }
+
