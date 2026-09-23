@@ -28,7 +28,7 @@ const HomeBottomNav = () => {
     ];
 
     return (
-        <nav className="fixed bottom-4 left-1/2 z-50
+        <nav className="fixed -bottom-2 left-1/2 z-50
             flex -translate-x-1/2 items-center gap-1
             rounded-[28px] border border-white/15
             bg-black/45 p-2 shadow-2xl backdrop-blur-2xl

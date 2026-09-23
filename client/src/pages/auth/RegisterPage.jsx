@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api.js";
 import { toast } from "react-toastify";
+
 import AuthLayout from "../../components/AuthLayout";
 import Input from "../../components/Input";
 import PrimaryButton from "../../components/PrimaryButton";
@@ -21,26 +22,53 @@ function RegisterPage() {
 
   const [termsAccepted, setTermsAccepted] = useState(false);
 
+  // 👇 request loading state
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (!termsAccepted) return;
+    if (!termsAccepted) {
+      toast.error("Please accept the Terms of Service and Privacy Policy.");
+      return;
+    }
 
-    api
-      .post("/api/v1/register", form)
-      .then((response) => {
-        if (response.data.success) {
-          toast.success(response.data.msg);
-        } else {
-          toast.error(response.data.msg);
-        }
-      })
-      .catch((err) => console.log(err));
+    // Prevent double click
+    if (loading) return;
+
+    try {
+      setLoading(true);
+
+      const response = await api.post("/api/v1/register", form);
+
+      if (response.data.success) {
+        toast.success(response.data.msg);
+
+        // Agar registration ke baad OTP page par jana hai
+        // navigate("/otp");
+      } else {
+        toast.error(response.data.msg);
+      }
+    } catch (err) {
+      console.log("Register Error:", err);
+
+      toast.error(
+        err?.response?.data?.msg ||
+        "Registration failed. Please try again."
+      );
+    } finally {
+      // Response/error dono ke baad loading false
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,7 +76,8 @@ function RegisterPage() {
       title="Create your account"
       subtitle="Join and start chatting with your friends"
     >
-      <HomeBottomNav/>
+      <HomeBottomNav />
+
       <form onSubmit={handleRegister}>
         <div className="grid grid-cols-2 gap-3">
           <Input
@@ -105,24 +134,41 @@ function RegisterPage() {
           onChange={handleChange}
         />
 
-        <label className="flex items-start gap-3 text-sm text-zinc-400 my-5 cursor-pointer">
+        <label
+          className="my-5 flex cursor-pointer items-start gap-3
+          text-sm text-zinc-400"
+        >
           <input
             type="checkbox"
             checked={termsAccepted}
             onChange={(e) => setTermsAccepted(e.target.checked)}
             className="mt-1 accent-orange-500"
           />
-          <span>I agree to the Terms of Service and Privacy Policy.</span>
+
+          <span>
+            I agree to the Terms of Service and Privacy Policy.
+          </span>
         </label>
 
-        <PrimaryButton type="submit">Create Account</PrimaryButton>
+        <PrimaryButton
+          type="submit"
+          loading={loading}
+          loadingText="Creating account..."
+          disabled={loading}
+        >
+          Create Account
+        </PrimaryButton>
       </form>
 
-      <p className="text-center text-sm text-zinc-400 mt-6">
+      <p className="mt-6 text-center text-sm text-zinc-400">
         Already have an account?{" "}
+
         <button
+          type="button"
           onClick={() => navigate("/login")}
-          className="text-orange-400 hover:text-orange-300 font-medium"
+          disabled={loading}
+          className="font-medium text-orange-400 hover:text-orange-300
+          disabled:cursor-not-allowed disabled:opacity-50"
         >
           Login
         </button>
