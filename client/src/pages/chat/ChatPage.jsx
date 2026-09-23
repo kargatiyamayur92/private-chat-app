@@ -54,7 +54,7 @@ function ChatPage() {
   useEffect(() => {
     chattomtobottomscroll()
 
-  }, [messages, selectedUser._id])
+  }, [messages, selectedUser])
 
   const sendMessageUI = () => {
     if (!message.trim() || !selectedUser?._id) return;
