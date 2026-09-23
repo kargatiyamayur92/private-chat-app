@@ -43,7 +43,7 @@ function ChatPage() {
 
       let timer = setTimeout(() => {
         socket.emit("typing", { senderid: profile._id, reciverid: selectedUser._id, istype: false })
-      }, 200);
+      }, 300);
 
       return () => {
         clearTimeout(timer)
@@ -407,9 +407,26 @@ function ChatPage() {
           ))}
         </div>
         {isTyping && (
-          <p className="text-sm text-zinc-400">
-            Typing...
-          </p>
+          <div className="px-4 py-2">
+            <div className="
+      inline-flex items-center gap-2
+      rounded-2xl
+      border border-white/10
+      bg-white/5
+      px-3.5 py-2
+      text-xs text-zinc-400
+      backdrop-blur-xl
+      shadow-[0_4px_20px_rgba(0,0,0,0.15)]
+    ">
+              <span>Typing</span>
+
+              <span className="flex gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse [animation-delay:150ms]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse [animation-delay:300ms]" />
+              </span>
+            </div>
+          </div>
         )}
 
         <div className="p-3 md:p-5 border-t border-white/10 bg-[#0d0d0f]">
