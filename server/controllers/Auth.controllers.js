@@ -268,6 +268,11 @@ export const logout = async (req, res) => {
 
         let token = req.user
 
+        let user = await usermodel.findOne({ _id: token.id })
+
+        user.online = false
+        await user.save()
+
         if (!token) {
             return res.json(
                 {
