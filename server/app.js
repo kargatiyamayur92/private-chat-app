@@ -60,7 +60,7 @@ io.on("connection", (socket) => {
         io.to(userID).emit('USer joined')
 
         io.emit("userOnline", {
-            userId: userID,
+            userId: userid,
             online: true
         });
 
