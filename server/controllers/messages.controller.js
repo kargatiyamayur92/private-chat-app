@@ -40,27 +40,35 @@ export const deleteallmessages = async (req, res) => {
     try {
         const { userid, selecteduserid } = req.params;
 
-        const result = await messagemodel.deleteMany({
-            $and: [
-                {
-                    $or: [
-                        { sender: userid },
-                        { reciver: userid }
-                    ]
-                },
-                {
-                    $or: [
-                        { sender: selecteduserid },
-                        { reciver: selecteduserid }
-                    ]
+        const result = await messagemodel.updateMany(
+            {
+                $or: [
+                    {
+                        sender: userid,
+                        reciver: selecteduserid
+                    },
+                    {
+                        sender: selecteduserid,
+                        reciver: userid
+                    }
+                ],
+
+                // Don't add the user twice
+                deletedFor: {
+                    $ne: userid
                 }
-            ]
-        });
+            },
+            {
+                $addToSet: {
+                    deletedFor: userid
+                }
+            }
+        );
 
         res.json({
             success: true,
-            msg: "All messages deleted",
-            deletedCount: result.deletedCount
+            msg: "Messages deleted for you",
+            deletedCount: result.modifiedCount
         });
 
     } catch (error) {
@@ -71,4 +79,4 @@ export const deleteallmessages = async (req, res) => {
             msg: "Failed to delete messages"
         });
     }
-};
+};  

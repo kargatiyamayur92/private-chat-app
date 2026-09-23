@@ -17,10 +17,16 @@ const messagesSchema = mongoose.Schema(
             type: String,
             required: true,
         },
-        time:{
-            type:String,
-            required:true,
-        }
+        time: {
+            type: String,
+            required: true,
+        },
+        deletedFor: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "user"
+            }
+        ]
     },
     {
         timestamps: true
