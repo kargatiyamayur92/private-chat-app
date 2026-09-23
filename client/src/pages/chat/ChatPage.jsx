@@ -130,10 +130,13 @@ function ChatPage() {
       const { message, senderuserid } = data;
       const now = new Date();
 
-      msgsound.currentTime = 0
-      msgsound.play.catch((error) => {
-        toast.warning("Notification sound blocked:", error);
-      });
+      msgsound.current.currentTime = 0;
+
+      msgsound.current
+        .play()
+        .catch((error) => {
+          console.log("Notification sound blocked:", error);
+        });
 
       setMessages((prev) => [
         ...prev,
