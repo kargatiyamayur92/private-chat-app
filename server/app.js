@@ -101,6 +101,12 @@ io.on("connection", (socket) => {
         if (!socket.userID) {
             return
         }
+
+        io.emit("userOnline", {
+            userId: socket.userID,
+            online: true
+        });
+
         let user = await usermodel.findOne({ _id: socket.userID })
         user.online = false
         await user.save()
