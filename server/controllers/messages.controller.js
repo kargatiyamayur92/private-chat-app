@@ -40,9 +40,7 @@ export const deleteallmessages = async (req, res) => {
     try {
         const { userid, selecteduserid } = req.params;
 
-        console.log("userid:", userid);
-        console.log("selecteduserid:", selecteduserid);
-
+        // 1. Mark messages as deleted for current user
         const result = await messagemodel.updateMany(
             {
                 $or: [
@@ -54,7 +52,10 @@ export const deleteallmessages = async (req, res) => {
                         sender: selecteduserid,
                         reciver: userid
                     }
-                ]
+                ],
+                deletedFor: {
+                    $ne: userid
+                }
             },
             {
                 $addToSet: {
@@ -63,22 +64,43 @@ export const deleteallmessages = async (req, res) => {
             }
         );
 
-        console.log("matchedCount:", result.matchedCount);
-        console.log("modifiedCount:", result.modifiedCount);
+        // 2. Permanently delete messages
+        //    when BOTH users have deleted them
+        const permanentlyDeleted = await messagemodel.deleteMany({
+            $or: [
+                {
+                    sender: userid,
+                    reciver: selecteduserid
+                },
+                {
+                    sender: selecteduserid,
+                    reciver: userid
+                }
+            ],
+            deletedFor: {
+                $all: [userid, selecteduserid]
+            }
+        });
+
+        console.log("Marked deleted:", result.modifiedCount);
+        console.log(
+            "Permanently deleted:",
+            permanentlyDeleted.deletedCount
+        );
 
         res.json({
             success: true,
             msg: "Messages deleted for you",
-            matchedCount: result.matchedCount,
-            modifiedCount: result.modifiedCount
+            markedDeleted: result.modifiedCount,
+            permanentlyDeleted: permanentlyDeleted.deletedCount
         });
 
     } catch (error) {
-        console.log("Delete error:", error);
+        console.log("Delete messages error:", error);
 
         res.status(500).json({
             success: false,
             msg: "Failed to delete messages"
         });
     }
-};  
+};
