@@ -175,6 +175,7 @@ function ChatPage() {
   const getChatMessages = async (receiverId) => {
     try {
       setloading(true)
+      setMessages([]);
       const response = await api.get(
         `/api/v1/getownmessages/${profile._id}/${receiverId}`
       );
