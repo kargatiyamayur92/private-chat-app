@@ -57,13 +57,11 @@ export const deleteallmessages = async (req, res) => {
                 deletedFor: {
                     $ne: userid
                 }
-            },
-            {
-                $addToSet: {
-                    deletedFor: userid
-                }
             }
         );
+
+        console.log("matchedCount:", result.matchedCount);
+        console.log("modifiedCount:", result.modifiedCount);
 
         res.json({
             success: true,
