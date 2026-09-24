@@ -4,6 +4,7 @@ import FeatureCards from "../components/home/FeatureCards";
 import HomeBottomNav from "../components/home/HomeBottomNav";
 import LiquidBackground from "../components/home/LiquidBackground";
 
+
 const Home = () => {
     return (
         <main className="relative min-h-screen overflow-hidden bg-[#07100d] text-white">
