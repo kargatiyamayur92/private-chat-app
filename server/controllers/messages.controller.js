@@ -40,6 +40,9 @@ export const deleteallmessages = async (req, res) => {
     try {
         const { userid, selecteduserid } = req.params;
 
+        console.log("userid:", userid);
+        console.log("selecteduserid:", selecteduserid);
+
         const result = await messagemodel.updateMany(
             {
                 $or: [
@@ -51,11 +54,11 @@ export const deleteallmessages = async (req, res) => {
                         sender: selecteduserid,
                         reciver: userid
                     }
-                ],
-
-                // Don't add the user twice
-                deletedFor: {
-                    $ne: userid
+                ]
+            },
+            {
+                $addToSet: {
+                    deletedFor: userid
                 }
             }
         );
@@ -66,11 +69,12 @@ export const deleteallmessages = async (req, res) => {
         res.json({
             success: true,
             msg: "Messages deleted for you",
-            deletedCount: result.modifiedCount
+            matchedCount: result.matchedCount,
+            modifiedCount: result.modifiedCount
         });
 
     } catch (error) {
-        console.log("Delete messages error:", error);
+        console.log("Delete error:", error);
 
         res.status(500).json({
             success: false,
