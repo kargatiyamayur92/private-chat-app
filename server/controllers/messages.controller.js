@@ -8,7 +8,7 @@ export const getownmessages = async (req, res) => {
         let { senderid, reciverid } = req.params
 
 
-        let messages = await messagemodel.find({ $and: [{ $or: [{ sender: senderid }, { reciver: senderid }] }, { $or: [{ sender: reciverid }, { reciver: reciverid }] }] })
+        let messages = await messagemodel.find({ $and: [{ $or: [{ sender: senderid }, { reciver: senderid }] }, { $or: [{ sender: reciverid }, { reciver: reciverid }] }], deletedFor: { $ne: userid } })
 
         //let user = await usermodel.findOne({ _id: senderid }).populate('messages');
 
