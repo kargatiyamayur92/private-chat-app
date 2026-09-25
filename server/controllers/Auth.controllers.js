@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import nodemailer from 'nodemailer'
 import OTPGenerator from './OTPGenerator.js'
-import { sendOTPEmail } from './emailSender.js' 
+import { sendOTPEmail } from './emailSender.js'
 
 export const register = async (req, res) => {
     try {
