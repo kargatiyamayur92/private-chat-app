@@ -154,10 +154,10 @@ export const logiOTPSEND = async (req, res) => {
 
         await sendOTPEmail(email,otp) 
 
-        bcrypt.hash(otp, 12, (err, hash) => {
-            if (!err) {
+        bcrypt.hash(otp, 12,async (err, hash) => {
+            if (hash) {
                 user.OTP = hash
-                user.save()
+                await user.save()
             }
 
         })
@@ -176,6 +176,7 @@ export const logiOTPSEND = async (req, res) => {
         console.log(error)
     }
 }
+
 export const loginOTPVerify = async (req, res) => {
     try {
         console.log("login with otp verify.................")
