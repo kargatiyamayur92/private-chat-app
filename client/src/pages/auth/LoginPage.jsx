@@ -76,7 +76,7 @@ function LoginPage() {
         title="Welcome back"
         subtitle="Login to continue your conversations"
       >
-
+        <HomeBottomNav/>
 
         {loginType === "password" ? (
           <form onSubmit={handleLogin}>
