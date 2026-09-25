@@ -127,6 +127,12 @@ export const loginpass = async (req, res) => {
 export const logiOTPSEND = async (req, res) => {
     try {
         console.log("login with otp.................")
+        return res.json(
+            {
+                success: false,
+                msg: "OTP service unavilable"
+            }
+        )
 
         let { email } = req.body
 
@@ -153,9 +159,9 @@ export const logiOTPSEND = async (req, res) => {
 
         let otp = OTPGenerator()
 
-        await sendOTPEmail(email,otp) 
+        await sendOTPEmail(email, otp)
 
-        bcrypt.hash(otp, 12,async (err, hash) => {
+        bcrypt.hash(otp, 12, async (err, hash) => {
             if (hash) {
                 user.OTP = hash
                 await user.save()
@@ -181,7 +187,12 @@ export const logiOTPSEND = async (req, res) => {
 export const loginOTPVerify = async (req, res) => {
     try {
         console.log("login with otp verify.................")
-
+        return res.json(
+            {
+                success: false,
+                msg: "OTP service unavilable"
+            }
+        )
         let { email, otp } = req.body
 
         let user = await usermodel.findOne({ email: email })
