@@ -6,7 +6,7 @@ export const sendOTPEmail = async (email, otp) => {
     try {
         const { data, error } = await resend.emails.send({
             from: process.env.EMAIL,
-            to: email,
+            to: [email],
             subject: "Your Private Chat OTP",
             html: `
                 <div style="
