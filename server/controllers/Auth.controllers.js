@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import nodemailer from 'nodemailer'
 import OTPGenerator from './OTPGenerator.js'
+import { sendOTPEmail } from './emailSender.js'
 
 export const register = async (req, res) => {
     try {
@@ -127,6 +128,14 @@ export const logiOTPSEND = async (req, res) => {
         console.log("login with otp.................")
 
         let { email } = req.body
+
+        if (!email) {
+            return res.status(400).json({
+                success: false,
+                msg: "Email is required"
+            });
+        }
+
         //console.log(email)
         let user = await usermodel.findOne({ email: email })
 
@@ -143,51 +152,23 @@ export const logiOTPSEND = async (req, res) => {
 
         let otp = OTPGenerator()
 
-        const transpoter = nodemailer.createTransport(
+        await sendOTPEmail(email,otp)
+
+        bcrypt.hash(otp, 12, (err, hash) => {
+            if (!err) {
+                user.OTP = hash
+                user.save()
+            }
+
+        })
+
+        res.json(
             {
-                host: "smtp.gmail.com",
-                port: 587,
-                secure: false,
-                auth: {
-                    user: process.env.EMAIL,
-                    pass: process.env.EMAIL_PASSWORD
-                }
+                success: true,
+                msg: "OTP Send Your Email"
             }
         )
 
-        const mailOption = {
-            from: process.env.EMAIL,
-            to: email,
-            subject: "Login With OTP",
-            text: `OTP : ${otp}`
-        }
-
-        let mailresponse = await transpoter.sendMail(mailOption)
-        //console.log(mailresponse)
-        if (mailresponse) {
-            bcrypt.hash(otp, 12, (err, hash) => {
-                if (!err) {
-                    user.OTP = hash
-                    user.save()
-                }
-
-            })
-
-            res.json(
-                {
-                    success: true,
-                    msg: "OTP Send Your Email"
-                }
-            )
-        }
-        else {
-            res.json(
-                {
-                    success: false,
-                    msg: "OTP Send Error"
-                }
-            )
-        }
 
 
 
