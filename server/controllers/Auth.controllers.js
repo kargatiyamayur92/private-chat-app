@@ -152,7 +152,7 @@ export const logiOTPSEND = async (req, res) => {
 
         let otp = OTPGenerator()
 
-        await sendOTPEmail(email,otp)
+        await sendOTPEmail(email,otp) 
 
         bcrypt.hash(otp, 12, (err, hash) => {
             if (!err) {
